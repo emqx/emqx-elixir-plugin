@@ -45,7 +45,7 @@ make
 ## step 5
 Run your code
 ```
-cd emq-rex/_rel/emqttd
+cd emq-relx/_rel/emqttd
 bin/emqttd start
 bin/emqttd_ctl plugins load emq_elixir_plugin
 ```
