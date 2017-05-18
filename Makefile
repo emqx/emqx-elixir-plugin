@@ -1,5 +1,5 @@
 
-PATH := $(PATH):$(CURDIR)/elixir/bin
+PATH := $(CURDIR)/elixir/bin:$(PATH)
 
 
 all: elixir/lib/elixir/ebin/elixir.app
