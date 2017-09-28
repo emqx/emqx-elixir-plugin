@@ -10,6 +10,7 @@ all: elixir/lib/elixir/ebin/elixir.app
 	
 	
 elixir/lib/elixir/ebin/elixir.app:
-	git clone https://github.com/elixir-lang/elixir.git
+	git clone --depth 1 https://github.com/elixir-lang/elixir.git
 	echo "start to build elixir ..."
 	make -C elixir -f Makefile
+	
