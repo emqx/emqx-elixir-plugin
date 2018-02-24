@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure your application as:
 #
-#     config :emq_elixir_plugin, key: :value
+#     config :emqx_elixir_plugin, key: :value
 #
 # and access this configuration in your application as:
 #
-#     Application.get_env(:emq_elixir_plugin, :key)
+#     Application.get_env(:emqx_elixir_plugin, :key)
 #
 # You can also configure a 3rd-party app:
 #

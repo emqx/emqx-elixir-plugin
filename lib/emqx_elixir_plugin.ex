@@ -1,5 +1,5 @@
 ##--------------------------------------------------------------------
-## Copyright (c) 2016-2017 EMQ Enterprise, Inc. (http://emqtt.io)
+## Copyright (c) 2016-2018 EMQ Enterprise, Inc. (http://emqtt.io)
 ##
 ## Licensed under the Apache License, Version 2.0 (the "License");
 ## you may not use this file except in compliance with the License.
@@ -14,19 +14,18 @@
 ## limitations under the License.
 ##--------------------------------------------------------------------
 
-
-defmodule EmqElixirPlugin do
+defmodule EmqxElixirPlugin do
   use Application
   
     def start(_type, _args) do
-        EmqElixirPlugin.Body.load([])
+        EmqxElixirPlugin.Body.load([])
         
         # start a dummy supervisor
-        EmqElixirPlugin.Supervisor.start_link()
+        EmqxElixirPlugin.Supervisor.start_link()
     end
   
     def stop(_app) do
-        EmqElixirPlugin.Body.unload()
+        EmqxElixirPlugin.Body.unload()
     end
 
 end

@@ -1,5 +1,5 @@
 ##--------------------------------------------------------------------
-## Copyright (c) 2016-2017 EMQ Enterprise, Inc. (http://emqtt.io)
+## Copyright (c) 2016-2018 EMQ Enterprise, Inc. (http://emqtt.io)
 ##
 ## Licensed under the Apache License, Version 2.0 (the "License");
 ## you may not use this file except in compliance with the License.
@@ -14,43 +14,42 @@
 ## limitations under the License.
 ##--------------------------------------------------------------------
 
-
-defmodule EmqElixirPlugin.Body do
+defmodule EmqxElixirPlugin.Body do
 
     def hook_add(a, b, c) do
-        :emqttd_hooks.add(a, b, c)
+        :emqx_hooks.add(a, b, c)
     end
     
     def hook_del(a, b) do
-        :emqttd_hooks.delete(a, b)
+        :emqx_hooks.delete(a, b)
     end
 
     def load(env) do
         # uncomment the hooks that you want, and implement its callback
         
-        #hook_add(:"message.publish",      &EmqElixirPlugin.Body.on_message_publish/2,     [env])
-        #hook_add(:"message.delivered",    &EmqElixirPlugin.Body.on_message_delivered/4,   [env])
-        #hook_add(:"message.acked",        &EmqElixirPlugin.Body.on_message_acked/4,       [env])
-        #hook_add(:"client.connected",     &EmqElixirPlugin.Body.on_client_connected/3,    [env])
-        #hook_add(:"client.subscribe",     &EmqElixirPlugin.Body.on_client_subscribe/4,    [env])
-        #hook_add(:"client.unsubscribe",   &EmqElixirPlugin.Body.on_client_unsubscribe/4,  [env])
-        #hook_add(:"client.disconnected",  &EmqElixirPlugin.Body.on_client_disconnected/3, [env])
-        #hook_add(:"session.subscribed",   &EmqElixirPlugin.Body.on_session_subscribed/4,  [env])
-        #hook_add(:"session.unsubscribed", &EmqElixirPlugin.Body.on_session_unsubscribed/4,[env])
+        #hook_add(:"message.publish",      &EmqxElixirPlugin.Body.on_message_publish/2,     [env])
+        #hook_add(:"message.delivered",    &EmqxElixirPlugin.Body.on_message_delivered/4,   [env])
+        #hook_add(:"message.acked",        &EmqxElixirPlugin.Body.on_message_acked/4,       [env])
+        #hook_add(:"client.connected",     &EmqxElixirPlugin.Body.on_client_connected/3,    [env])
+        #hook_add(:"client.subscribe",     &EmqxElixirPlugin.Body.on_client_subscribe/4,    [env])
+        #hook_add(:"client.unsubscribe",   &EmqxElixirPlugin.Body.on_client_unsubscribe/4,  [env])
+        #hook_add(:"client.disconnected",  &EmqxElixirPlugin.Body.on_client_disconnected/3, [env])
+        #hook_add(:"session.subscribed",   &EmqxElixirPlugin.Body.on_session_subscribed/4,  [env])
+        #hook_add(:"session.unsubscribed", &EmqxElixirPlugin.Body.on_session_unsubscribed/4,[env])
     end
 
     def unload do
         # uncomment the hooks that you want
         
-        #hook_del(:"message.publish",      &EmqElixirPlugin.Body.on_message_publish/2     )
-        #hook_del(:"message.delivered",    &EmqElixirPlugin.Body.on_message_delivered/4   )
-        #hook_del(:"message.acked",        &EmqElixirPlugin.Body.on_message_acked/4       )
-        #hook_del(:"client.connected",     &EmqElixirPlugin.Body.on_client_connected/3    )
-        #hook_del(:"client.subscribe",     &EmqElixirPlugin.Body.on_client_subscribe/4    )
-        #hook_del(:"client.unsubscribe",   &EmqElixirPlugin.Body.on_client_unsubscribe/4  )
-        #hook_del(:"client.disconnected",  &EmqElixirPlugin.Body.on_client_disconnected/3 )
-        #hook_del(:"session.subscribed",   &EmqElixirPlugin.Body.on_session_subscribed/4  )
-        #hook_del(:"session.unsubscribed", &EmqElixirPlugin.Body.on_session_unsubscribed/4)
+        #hook_del(:"message.publish",      &EmqxElixirPlugin.Body.on_message_publish/2     )
+        #hook_del(:"message.delivered",    &EmqxElixirPlugin.Body.on_message_delivered/4   )
+        #hook_del(:"message.acked",        &EmqxElixirPlugin.Body.on_message_acked/4       )
+        #hook_del(:"client.connected",     &EmqxElixirPlugin.Body.on_client_connected/3    )
+        #hook_del(:"client.subscribe",     &EmqxElixirPlugin.Body.on_client_subscribe/4    )
+        #hook_del(:"client.unsubscribe",   &EmqxElixirPlugin.Body.on_client_unsubscribe/4  )
+        #hook_del(:"client.disconnected",  &EmqxElixirPlugin.Body.on_client_disconnected/3 )
+        #hook_del(:"session.subscribed",   &EmqxElixirPlugin.Body.on_session_subscribed/4  )
+        #hook_del(:"session.unsubscribed", &EmqxElixirPlugin.Body.on_session_unsubscribed/4)
     end
     
     def on_message_publish(message, _env) do
@@ -125,6 +124,4 @@ defmodule EmqElixirPlugin.Body do
         {:ok, topicitem}
     end
 end
-
-
 
