@@ -14,19 +14,22 @@
 ## limitations under the License.
 ##--------------------------------------------------------------------
 
+defmodule EmqxElixirPlugin do
+  
+  Module.register_attribute(__MODULE__, :emqx_plugin, accumulate: false, persist: true)
+  Module.put_attribute(__MODULE__, :emqx_plugin, __MODULE__)
 
-defmodule EmqElixirPlugin do
   use Application
   
     def start(_type, _args) do
-        EmqElixirPlugin.Body.load([])
+        EmqxElixirPlugin.Body.load([])
         
         # start a dummy supervisor
-        EmqElixirPlugin.Supervisor.start_link()
+        EmqxElixirPlugin.Supervisor.start_link()
     end
   
     def stop(_app) do
-        EmqElixirPlugin.Body.unload()
+        EmqxElixirPlugin.Body.unload()
     end
 
 end

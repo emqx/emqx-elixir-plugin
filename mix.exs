@@ -1,9 +1,9 @@
-defmodule EmqElixirPlugin.Mixfile do
+defmodule EmqxElixirPlugin.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :emq_elixir_plugin,
+      app: :emqx_elixir_plugin,
       version: "2.3.2",
       elixir: "~> 1.5-dev",
       start_permanent: Mix.env == :prod,
@@ -15,7 +15,7 @@ defmodule EmqElixirPlugin.Mixfile do
   def application do
     [
       extra_applications: [:logger],
-      mod: {EmqElixirPlugin, []}
+      mod: {EmqxElixirPlugin, []}
     ]
   end
 

@@ -14,7 +14,7 @@
 ## limitations under the License.
 ##--------------------------------------------------------------------
 
-defmodule EmqElixirPlugin.Supervisor do
+defmodule EmqxElixirPlugin.Supervisor do
   # Automatically imports Supervisor.Spec
   use Supervisor
 
