@@ -1,6 +1,6 @@
-defmodule EmqElixirPluginTest do
+defmodule EmqxElixirPluginTest do
   use ExUnit.Case
-  doctest EmqElixirPlugin
+  doctest EmqxElixirPlugin
 
   test "the truth" do
     assert 1 + 1 == 2
