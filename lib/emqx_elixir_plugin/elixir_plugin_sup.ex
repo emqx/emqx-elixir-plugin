@@ -1,5 +1,5 @@
 ##--------------------------------------------------------------------
-## Copyright (c) 2016-2017 EMQ Enterprise, Inc. (http://emqtt.io)
+## Copyright (c) 2021 EMQ Technologies Co., Ltd. All Rights Reserved.
 ##
 ## Licensed under the Apache License, Version 2.0 (the "License");
 ## you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 ## limitations under the License.
 ##--------------------------------------------------------------------
 
-defmodule EmqElixirPlugin.Supervisor do
+defmodule EmqxElixirPlugin.Supervisor do
   # Automatically imports Supervisor.Spec
   use Supervisor
 
