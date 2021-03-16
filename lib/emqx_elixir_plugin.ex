@@ -15,19 +15,19 @@
 ##--------------------------------------------------------------------
 
 defmodule EmqxElixirPlugin do
-  
+
   Module.register_attribute(__MODULE__, :emqx_plugin, accumulate: false, persist: true)
   Module.put_attribute(__MODULE__, :emqx_plugin, __MODULE__)
 
   use Application
-  
+
     def start(_type, _args) do
         EmqxElixirPlugin.Body.load([])
-        
+
         # start a dummy supervisor
         EmqxElixirPlugin.Supervisor.start_link()
     end
-  
+
     def stop(_app) do
         EmqxElixirPlugin.Body.unload()
     end

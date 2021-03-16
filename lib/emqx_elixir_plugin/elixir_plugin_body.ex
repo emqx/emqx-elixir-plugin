@@ -16,22 +16,22 @@
 
 
 defmodule EmqxElixirPlugin.Body do
-    
-    require Record    
+
+    require Record
 
     Record.defrecord(:message, Record.extract(:message, from_lib: "emqx/include/emqx.hrl"))
 
     def hook_add(a, b, c) do
         :emqx_hooks.add(a, b, c)
     end
-    
+
     def hook_del(a, b) do
         :emqx_hooks.del(a, b)
     end
 
     def load(env) do
         # uncomment the hooks that you want, and implement its callback
-        
+
         #hook_add(:"client.authenticate",  &EmqxElixirPlugin.Body.on_client_authenticate/2, [env])
         #hook_add(:"client.check_acl",     &EmqxElixirPlugin.Body.on_client_check_acl/5,    [env])
         #hook_add(:"message.publish",      &EmqxElixirPlugin.Body.on_message_publish/2,     [env])
@@ -72,7 +72,7 @@ defmodule EmqxElixirPlugin.Body do
 
         {:stop, :allow}
     end
-    
+
     def on_message_publish(msg = message(topic: <<"$SYS/", _ :: binary>>), _env) do
         # ingore SYS messages
 
@@ -81,12 +81,12 @@ defmodule EmqxElixirPlugin.Body do
 
     def on_message_publish(message, _env) do
         IO.inspect(["elixir on_message_publish", message])
-        
+
         # add your elixir code here
-        
+
         {:ok, message}
     end
-    
+
     def on_message_deliver(credentials, message, _env) do
         IO.inspect(["elixir on_message_deliver", credentials, message])
 
@@ -94,15 +94,15 @@ defmodule EmqxElixirPlugin.Body do
 
         :ok
     end
-    
+
     def on_message_acked(credentials, message, _env) do
         IO.inspect(["elixir on_message_acked", credentials, message])
-        
+
         # add your elixir code here
-        
+
         :ok
     end
-    
+
     def on_client_connected(credentials, connack, attrs, _env) do
         IO.inspect(["elixir on_client_connected", credentials, connack, attrs])
 
@@ -110,44 +110,44 @@ defmodule EmqxElixirPlugin.Body do
 
         :ok
     end
-    
+
     def on_client_disconnected(credentials, reasoncode, _env) do
         IO.inspect(["elixir on_client_disconnected", credentials, reasoncode])
-        
+
         # add your elixir code here
-        
+
         :ok
     end
-    
+
     def on_client_subscribe(credentials, topictable, _env) do
         IO.inspect(["elixir on_client_subscribe", credentials, topictable])
-        
+
         # add your elixir code here
-        
+
         {:ok, topictable}
     end
-    
+
     def on_client_unsubscribe(credentials, topictable, _env) do
         IO.inspect(["elixir on_client_unsubscribe", credentials, topictable])
-        
+
         # add your elixir code here
-        
+
         {:ok, topictable}
     end
-    
+
     def on_session_subscribed(credentials, topic, subopts, _env) do
         IO.inspect(["elixir on_session_subscribed", credentials, topic, subopts])
-        
+
         # add your elixir code here
-        
+
         {:ok, subopts}
     end
-    
+
     def on_session_unsubscribed(credentials, topic, opts, _env) do
         IO.inspect(["elixir on_session_unsubscribed", credentials, topic, opts])
-        
+
         # add your elixir code here
-        
+
         {:ok, opts}
     end
 end
