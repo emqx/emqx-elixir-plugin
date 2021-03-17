@@ -19,8 +19,6 @@ defmodule EmqxElixirPlugin.Body do
 
     require Record
 
-    Record.defrecord(:message, Record.extract(:message, from_lib: "emqx/include/emqx.hrl"))
-
     def hook_add(a, b, c) do
         :emqx_hooks.add(a, b, c)
     end
@@ -34,7 +32,7 @@ defmodule EmqxElixirPlugin.Body do
 
         #hook_add(:"client.authenticate",  &EmqxElixirPlugin.Body.on_client_authenticate/2, [env])
         #hook_add(:"client.check_acl",     &EmqxElixirPlugin.Body.on_client_check_acl/5,    [env])
-        #hook_add(:"message.publish",      &EmqxElixirPlugin.Body.on_message_publish/2,     [env])
+        hook_add(:"message.publish",      &EmqxElixirPlugin.Body.on_message_publish/2,     [env])
         #hook_add(:"message.deliver",      &EmqxElixirPlugin.Body.on_message_deliver/3,     [env])
         #hook_add(:"message.acked",        &EmqxElixirPlugin.Body.on_message_acked/3,       [env])
         #hook_add(:"client.connected",     &EmqxElixirPlugin.Body.on_client_connected/4,    [env])
@@ -73,24 +71,23 @@ defmodule EmqxElixirPlugin.Body do
         {:stop, :allow}
     end
 
-    def on_message_publish(msg = message(topic: <<"$SYS/", _ :: binary>>), _env) do
-        # ingore SYS messages
-
+    def on_message_publish(msg, env) do
+        do_on_message_publish(:emqx_message.to_map(msg), env)
         {:ok, msg}
     end
 
-    def on_message_publish(message, _env) do
-        IO.inspect(["elixir on_message_publish", message])
+  defp do_on_message_publish(message = %{:payload => payload}, _env) do
+        IO.inspect(["elixir on_message_publish: ", payload])
 
-        # add your elixir code here
+        # add your code here
 
-        {:ok, message}
+        {:ok, :emqx_message.from_map(message)}
     end
 
     def on_message_deliver(credentials, message, _env) do
         IO.inspect(["elixir on_message_deliver", credentials, message])
 
-        # add your elixir code here
+        # add your code here
 
         :ok
     end
@@ -98,7 +95,7 @@ defmodule EmqxElixirPlugin.Body do
     def on_message_acked(credentials, message, _env) do
         IO.inspect(["elixir on_message_acked", credentials, message])
 
-        # add your elixir code here
+        # add your code here
 
         :ok
     end
@@ -106,7 +103,7 @@ defmodule EmqxElixirPlugin.Body do
     def on_client_connected(credentials, connack, attrs, _env) do
         IO.inspect(["elixir on_client_connected", credentials, connack, attrs])
 
-        # add your elixir code here
+        # add your code here
 
         :ok
     end
@@ -114,7 +111,7 @@ defmodule EmqxElixirPlugin.Body do
     def on_client_disconnected(credentials, reasoncode, _env) do
         IO.inspect(["elixir on_client_disconnected", credentials, reasoncode])
 
-        # add your elixir code here
+        # add your code here
 
         :ok
     end
@@ -122,7 +119,7 @@ defmodule EmqxElixirPlugin.Body do
     def on_client_subscribe(credentials, topictable, _env) do
         IO.inspect(["elixir on_client_subscribe", credentials, topictable])
 
-        # add your elixir code here
+        # add your code here
 
         {:ok, topictable}
     end
@@ -130,7 +127,7 @@ defmodule EmqxElixirPlugin.Body do
     def on_client_unsubscribe(credentials, topictable, _env) do
         IO.inspect(["elixir on_client_unsubscribe", credentials, topictable])
 
-        # add your elixir code here
+        # add your code here
 
         {:ok, topictable}
     end
@@ -138,7 +135,7 @@ defmodule EmqxElixirPlugin.Body do
     def on_session_subscribed(credentials, topic, subopts, _env) do
         IO.inspect(["elixir on_session_subscribed", credentials, topic, subopts])
 
-        # add your elixir code here
+        # add your code here
 
         {:ok, subopts}
     end
@@ -146,7 +143,7 @@ defmodule EmqxElixirPlugin.Body do
     def on_session_unsubscribed(credentials, topic, opts, _env) do
         IO.inspect(["elixir on_session_unsubscribed", credentials, topic, opts])
 
-        # add your elixir code here
+        # add your code here
 
         {:ok, opts}
     end
