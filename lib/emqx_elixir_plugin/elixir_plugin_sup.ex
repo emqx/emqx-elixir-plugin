@@ -26,6 +26,6 @@ defmodule EmqxElixirPlugin.Supervisor do
     children = []
 
     # supervise/2 is imported from Supervisor.Spec
-    supervise(children, strategy: :one_for_one)
+    Supervisor.init(children, strategy: :one_for_one)
   end
 end
