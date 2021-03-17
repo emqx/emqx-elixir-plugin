@@ -1,8 +1,14 @@
+The default branch of this repo has been changed from `master` to `main`.
+
+`master` branch should not be deleted to continue serving old version's dependency reference.
+
+Going forward, we should only pin git tags as rebar dependency.
+
 # emqx_elixir_plugin
 
 This is an EMQ X plugin template that enables you to write EMQ X plugins using Elixir.
 
-Here is an example, supposing you are interested in using a publish-message hook:
+Here is an example, supposing you are interested in using a publish-message hook.
 
 ## Step 1: Add `emqx_elixir_plugin` as emqx's dependency
 
