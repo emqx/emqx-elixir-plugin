@@ -4,81 +4,67 @@ This is an EMQ X plugin template that enables you to write EMQ X plugins using E
 
 Here is an example, supposing you are interested in using a publish-message hook:
 
-## Step 1
-Clone the `emqx-rel` project and its dependencies.
-```
-$ git clone https://github.com/emqx/emqx-rel.git
-$ cd emqx-rel
-$ make
-```
+## Step 1: Add `emqx_elixir_plugin` as emqx's dependency
 
+Clone [emqx/emqx.git](https://github.com/emqx/emqx), and
+follow the [instructions](https://github.com/emqx/emqx/blob/master/lib-extra/README.md)
+to add the plugin repo as an extra dependency in the `elixir_plugins` group.
 
-## Step 2
-This step will load `emqx-elixir-plugin` into the `emqx-rel` project. `emqx-elixir-plugin` is not included in the release project by default, since it is just a development template.
+## Step 2: Instruct the build scripts to include `emqx_elixir_plugin` in the build
 
-+ Modify `emqx-rel/rebar.config`:
-  - Append `emqx_elixir_plugin` to `elixir_deps`
-  - Append `{emqx_elixir_plugin, load}` to `elixir_relx_apps`:
+Set `EMQX_EXTRA_PLUGINS` environment variable to include this plugin in the build, e.g. in bash:
+`export EMQX_EXTRA_PLUGINS='emqx_elixir_plugin'`
 
-```
-{elixir_deps, [
- {emqx_elixir_plugin, {git, "https://github.com/z8674558/emqx-elixir-plugin", {branch, "master"}}}
-]}.
+## Step 3: Build a release
 
-...
-
-{elixir_relx_apps, [
-  {emqx_elixir_plugin, load}
-]}.
-
-```
-
-+ Re-make, in order to install the new dependencies (inside `emqx-rel`'s root):
 ```
 $ make
 ```
 
-## Step 3
-`emqx-relx/_build/emqx/lib/emqx_elixir_plugin` is the working directory of following steps.
+If all goes as expected, there should be two directories in the release:
 
-Uncomment the following line in the `load/1` function of `deps/emqx_elixir_plugin/lib/emqx_elixir_plugin/elixir_plugin_body.ex`
-
-```elixir
-hook_add(:"message.publish",      &EmqxElixirPlugin.Body.on_message_publish/2,     [env])
+```
+_build/emqx/rel/emqx/lib/elixir-<..elixir-vsn..>/
+_build/emqx/rel/emqx/lib/emqx_elixir_plugin-<..plugin-vsn..>/
 ```
 
-and uncomment the following line in `unload/0` of the same file:
+## Step 4: Run your code
 
-```elixir
-hook_del(:"message.publish",      &EmqxElixirPlugin.Body.on_message_publish/2     )
+### Start the node
+
+```
+./_build/emqx/rel/emqx/bin/emqx console
 ```
 
-## Step 4
+### Load the plugin
 
-Write your code inside the `on_message_publish/2` function:
+Start another shell console and execute
 
-```elixir
-def on_message_publish(message, _env) do
-    IO.inspect(["elixir on_message_publish", message])
-        
-    # add your elixir code here
-        
-    {:ok, message}
-end
+```
+./_build/emqx/rel/emqx/bin/emqx_ctl plugins load emqx_elixir_plugin
 ```
 
-## Step 5
-Compile your code (again, inside `emqx-rel`'s root):
+### Send a message to test
+
+The demo code by default has the `on_message_publish` callback registered as a hook.
+And the callback is implemented to print out the payload.
+
+Send a message from any MQTT client.
+
 ```
-$ make
+mosquitto_pub -h localhost -t 'a/b/c' -m 'Hello Elixir'
 ```
 
-## Step 6
-Run your code
-```
-$ cd emqx-rel/_build/emqx/rel/emqx
-$ bin/emqx start
-$ bin/emqx_ctl plugins load emqx_elixir_plugin
-```
-Your elixir plugin should be working now.
+The EMQ X node console should print out:
 
+```
+["elixir on_message_publish: ", "Hello Elixir"]
+```
+
+## Caveats
+
+* Elixir as Erlang dependency is not quite nicely supported as incremental builds,
+  meaning you will not be able to edit the code in emqx.git project's sub directory and get the changes rebuilt.
+
+* To have the plugin enabled/loaded by default, you can include it in this template
+  `data/loaded_plugins.tmpl` in emqx.git project.
