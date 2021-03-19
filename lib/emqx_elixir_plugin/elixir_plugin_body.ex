@@ -16,139 +16,33 @@
 
 
 defmodule EmqxElixirPlugin.Body do
-    
-    require Record    
+  defp hook(point, cb, initarg) do
+    :emqx.hook(point, cb, initarg)
+  end
 
-    Record.defrecord(:message, Record.extract(:message, from_lib: "emqx/include/emqx.hrl"))
+  defp unhook(point, cb) do
+    :emqx.unhook(point, cb)
+  end
 
-    def hook_add(a, b, c) do
-        :emqx_hooks.add(a, b, c)
-    end
-    
-    def hook_del(a, b) do
-        :emqx_hooks.del(a, b)
-    end
+  def load(env) do
+    ## hook only the ones you need
+    ## For more hook points see https://docs.emqx.io/en/broker/v4.2/advanced/hooks.html#hookpoint
+    hook(:"message.publish",      &__MODULE__.on_message_publish/2,      [env])
+  end
 
-    def load(env) do
-        # uncomment the hooks that you want, and implement its callback
-        
-        #hook_add(:"client.authenticate",  &EmqxElixirPlugin.Body.on_client_authenticate/2, [env])
-        #hook_add(:"client.check_acl",     &EmqxElixirPlugin.Body.on_client_check_acl/5,    [env])
-        #hook_add(:"message.publish",      &EmqxElixirPlugin.Body.on_message_publish/2,     [env])
-        #hook_add(:"message.deliver",      &EmqxElixirPlugin.Body.on_message_deliver/3,     [env])
-        #hook_add(:"message.acked",        &EmqxElixirPlugin.Body.on_message_acked/3,       [env])
-        #hook_add(:"client.connected",     &EmqxElixirPlugin.Body.on_client_connected/4,    [env])
-        #hook_add(:"client.subscribe",     &EmqxElixirPlugin.Body.on_client_subscribe/3,    [env])
-        #hook_add(:"client.unsubscribe",   &EmqxElixirPlugin.Body.on_client_unsubscribe/3,  [env])
-        #hook_add(:"client.disconnected",  &EmqxElixirPlugin.Body.on_client_disconnected/3, [env])
-        #hook_add(:"session.subscribed",   &EmqxElixirPlugin.Body.on_session_subscribed/4,  [env])
-        #hook_add(:"session.unsubscribed", &EmqxElixirPlugin.Body.on_session_unsubscribed/4,[env])
-    end
+  def unload do
+    unhook(:"message.publish",      &__MODULE__.on_message_publish/2)
+  end
 
-    def unload do
-        # uncomment the hooks that you want
+  def on_message_publish(msg, env) do
+      do_on_message_publish(:emqx_message.to_map(msg), env)
+      {:ok, msg}
+  end
 
-        #hook_del(:"client.authenticate",  &EmqxElixirPlugin.Body.on_client_authenticate/2 )
-        #hook_del(:"client.check_acl",     &EmqxElixirPlugin.Body.on_client_check_acl/5    )
-        #hook_del(:"message.publish",      &EmqxElixirPlugin.Body.on_message_publish/2     )
-        #hook_del(:"message.deliver",      &EmqxElixirPlugin.Body.on_message_deliver/3     )
-        #hook_del(:"message.acked",        &EmqxElixirPlugin.Body.on_message_acked/3       )
-        #hook_del(:"client.connected",     &EmqxElixirPlugin.Body.on_client_connected/4    )
-        #hook_del(:"client.subscribe",     &EmqxElixirPlugin.Body.on_client_subscribe/3    )
-        #hook_del(:"client.unsubscribe",   &EmqxElixirPlugin.Body.on_client_unsubscribe/3  )
-        #hook_del(:"client.disconnected",  &EmqxElixirPlugin.Body.on_client_disconnected/3 )
-        #hook_del(:"session.subscribed",   &EmqxElixirPlugin.Body.on_session_subscribed/4  )
-        #hook_del(:"session.unsubscribed", &EmqxElixirPlugin.Body.on_session_unsubscribed/4)
-    end
+  defp do_on_message_publish(message = %{:payload => payload}, _env) do
+    IO.inspect(["elixir on_message_publish: ", payload])
+    # add your code here
+    {:ok, :emqx_message.from_map(message)}
+  end
 
-    def on_client_authenticate(credentials, _env) do
-        IO.inspect(["elixir on_client_authenticate", credentials])
-
-        {:stop, Map.put(credentials, :auth_result, :success)}
-    end
-
-    def on_client_check_acl(credentials, pubsub, topic, defult_result, _env) do
-        IO.inspect(["elixir on_client_check_acl", credentials, pubsub, topic, defult_result])
-
-        {:stop, :allow}
-    end
-    
-    def on_message_publish(msg = message(topic: <<"$SYS/", _ :: binary>>), _env) do
-        # ingore SYS messages
-
-        {:ok, msg}
-    end
-
-    def on_message_publish(message, _env) do
-        IO.inspect(["elixir on_message_publish", message])
-        
-        # add your elixir code here
-        
-        {:ok, message}
-    end
-    
-    def on_message_deliver(credentials, message, _env) do
-        IO.inspect(["elixir on_message_deliver", credentials, message])
-
-        # add your elixir code here
-
-        :ok
-    end
-    
-    def on_message_acked(credentials, message, _env) do
-        IO.inspect(["elixir on_message_acked", credentials, message])
-        
-        # add your elixir code here
-        
-        :ok
-    end
-    
-    def on_client_connected(credentials, connack, attrs, _env) do
-        IO.inspect(["elixir on_client_connected", credentials, connack, attrs])
-
-        # add your elixir code here
-
-        :ok
-    end
-    
-    def on_client_disconnected(credentials, reasoncode, _env) do
-        IO.inspect(["elixir on_client_disconnected", credentials, reasoncode])
-        
-        # add your elixir code here
-        
-        :ok
-    end
-    
-    def on_client_subscribe(credentials, topictable, _env) do
-        IO.inspect(["elixir on_client_subscribe", credentials, topictable])
-        
-        # add your elixir code here
-        
-        {:ok, topictable}
-    end
-    
-    def on_client_unsubscribe(credentials, topictable, _env) do
-        IO.inspect(["elixir on_client_unsubscribe", credentials, topictable])
-        
-        # add your elixir code here
-        
-        {:ok, topictable}
-    end
-    
-    def on_session_subscribed(credentials, topic, subopts, _env) do
-        IO.inspect(["elixir on_session_subscribed", credentials, topic, subopts])
-        
-        # add your elixir code here
-        
-        {:ok, subopts}
-    end
-    
-    def on_session_unsubscribed(credentials, topic, opts, _env) do
-        IO.inspect(["elixir on_session_unsubscribed", credentials, topic, opts])
-        
-        # add your elixir code here
-        
-        {:ok, opts}
-    end
 end
-
