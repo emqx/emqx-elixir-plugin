@@ -1,4 +1,0 @@
-{mapping, "some_key", "emqx_elixir_plugin.some_key", [
-  {default, "default_value"},
-  {datatype, string}
-]}.

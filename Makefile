@@ -1,3 +1,0 @@
-
-compile:
-	mix compile
