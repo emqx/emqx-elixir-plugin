@@ -5,11 +5,11 @@ An example Mix project that can be used to build an EMQX 5.0.0 plugin.
 ## Quickstart
 
 1. `make` or `MIX_ENV=prod mix release --overwrite`
-2. Copy `_build/prod/plugrelex/example/example-0.1.0` to the `plugins` directory in your EMQX installation.
+2. Copy `_build/prod/plugrelex/elixir_plugin_template/elixir_plugin_template-0.1.0.tar.gz` to the `plugins` directory in your EMQX installation.
 3. ```sh
-   emqx ctl plugins install example-0.1.0
-   emqx ctl plugins enable example-0.1.0
-   emqx ctl plugins start example-0.1.0
+   emqx ctl plugins install elixir_plugin_template-0.1.0
+   emqx ctl plugins enable elixir_plugin_template-0.1.0
+   emqx ctl plugins start elixir_plugin_template-0.1.0
    ```
 4. In a console in your broker (`emqx remote_console`):
 
