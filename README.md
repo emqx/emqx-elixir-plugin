@@ -1,5 +1,8 @@
 The default branch of this repo has been changed from `master` to `main`.
 
+`main` branch is applicable for EMQX 4.x series.
+Please see `emqx50` branch when building plugins for EMQX 5.0
+
 `master` branch should not be deleted to continue serving old version's dependency reference.
 
 Going forward, we should only pin git tags as rebar dependency.
