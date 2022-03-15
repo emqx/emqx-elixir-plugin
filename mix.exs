@@ -233,7 +233,7 @@ defmodule ElixirPluginTemplate.MixProject do
       # sure to use `runtime: false`.
       {:emqx,
        git: "https://github.com/emqx/emqx",
-       ref: "3d19e77f00f5bde343ded422a9cdc4540cfc8c9e",
+       ref: "d7d0525733473f6d5f9b528c37c86e0a3280f26b",
        sparse: "apps/emqx",
        runtime: false},
       # temporarily needed due to clashing dependencies of
