@@ -17,7 +17,7 @@ defmodule ElixirPluginTemplate.Application do
 
     # put any start up your plugin has to do here
     with pid when is_pid(pid) <- Process.whereis(:emqx_hooks) do
-      :emqx.hook(:"message.publish", {ElixirPluginTemplate, :log_msg, []})
+      :emqx_hooks.add(:"message.publish", {ElixirPluginTemplate, :log_msg, []}, 1000)
     end
 
     Supervisor.start_link(children, opts)
@@ -27,7 +27,7 @@ defmodule ElixirPluginTemplate.Application do
   def stop(_state) do
     # put any clean up your plugin has to do when being stopped here
     with pid when is_pid(pid) <- Process.whereis(:emqx_hooks) do
-      :emqx.unhook(:"message.publish", {ElixirPluginTemplate, :log_msg, []})
+      :emqx_hooks.del(:"message.publish", {ElixirPluginTemplate, :log_msg, []})
     end
 
     :ok
