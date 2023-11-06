@@ -233,9 +233,22 @@ defmodule ElixirPluginTemplate.MixProject do
       # sure to use `runtime: false`.
       {:emqx,
        git: "https://github.com/emqx/emqx",
-       ref: "d7d0525733473f6d5f9b528c37c86e0a3280f26b",
+       ref: "7b3ce3cbc740af4707f5bef5aee499f1e9842ac9",
        sparse: "apps/emqx",
        runtime: false},
+      {:emqx_utils,
+       git: "https://github.com/emqx/emqx",
+       ref: "7b3ce3cbc740af4707f5bef5aee499f1e9842ac9",
+       sparse: "apps/emqx_utils",
+       runtime: false,
+       override: true},
+      {:emqx_durable_storage,
+       git: "https://github.com/emqx/emqx",
+       ref: "7b3ce3cbc740af4707f5bef5aee499f1e9842ac9",
+       sparse: "apps/emqx_durable_storage",
+       runtime: false,
+       override: true,
+       app: false},
       # temporarily needed due to clashing dependencies of
       # dependencies of emqx.
       {:cowlib, "2.8.0", override: true, runtime: false},
