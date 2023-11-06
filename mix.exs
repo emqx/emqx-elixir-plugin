@@ -1,12 +1,12 @@
 defmodule ElixirPluginTemplate.MixProject do
   use Mix.Project
 
-  @emqx_metadata_vsn "0.1.0"
+  @emqx_metadata_vsn "0.1.2"
 
   def project do
     [
       app: :elixir_plugin_template,
-      version: "0.1.0",
+      version: "0.1.2",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       # we don't consolidate protocols to avoid clashes with other
