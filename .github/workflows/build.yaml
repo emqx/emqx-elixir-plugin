@@ -6,6 +6,8 @@ on:
   push:
     branches:
       - emqx50
+    tags:
+      - '*'
   pull_request:
   workflow_dispatch:
 
